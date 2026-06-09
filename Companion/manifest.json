@@ -13,7 +13,7 @@
       "email": "sam.lynam@eu.panasonic.com"
     }
   ],
-  "legacyIds": ["panasonic-autoframing"],
+  "legacyIds": [],
   "runtime": {
     "type": "node18",
     "api": "nodejs-ipc",
