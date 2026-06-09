@@ -1,5 +1,5 @@
 {
-  "name": "companion-module-panasonic-mps",
+  "name": "companion-module-panasonic-mediaproductionsuite",
   "version": "1.0.0",
   "type": "module",
   "main": "dist/main.js",
@@ -10,7 +10,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bitfocus/companion-module-panasonic-mps.git"
+    "url": "git+https://github.com/bitfocus/companion-module-panasonic-mediaproductionsuite.git"
   },
   "dependencies": {
     "@companion-module/base": "~1.11.0"
