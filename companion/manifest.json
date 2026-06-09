@@ -1,5 +1,5 @@
 {
-  "id": "panasonic-mps",
+  "id": "panasonic-mediaproductionsuite",
   "name": "Panasonic Media Production Suite",
   "shortname": "MPS",
   "description": "Control Panasonic Media Production Suite including Auto Framing, Auto Tracking, Video Mixer, and License APIs",
