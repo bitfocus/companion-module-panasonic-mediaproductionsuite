@@ -5,12 +5,12 @@
   "description": "Control Panasonic Media Production Suite including Auto Framing, Auto Tracking, Video Mixer, and License APIs",
   "version": "1.0.0",
   "license": "MIT",
-  "repository": "git+https://github.com/bitfocus/companion-module-panasonic-mps.git",
-  "bugs": "https://github.com/bitfocus/companion-module-panasonic-mps/issues",
+  "repository": "git+https://github.com/bitfocus/companion-module-panasonic-mediaproductionsuite.git",
+  "bugs": "https://github.com/bitfocus/companion-module-panasonic-mediaproductionsuite/issues",
   "maintainers": [
     {
-      "name": "Companion Developer",
-      "email": "developer@example.com"
+      "name": "Samuel Lynam",
+      "email": "sam.lynam@eu.panasonic.com"
     }
   ],
   "legacyIds": ["panasonic-autoframing"],
