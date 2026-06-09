@@ -4,42 +4,7 @@ Bitfocus Companion module for controlling **Panasonic Media Production Suite** i
 
 See [HELP.md](./companion/HELP.md) and [LICENSE](./LICENSE)
 
-## Getting Started
 
-### Prerequisites
-
-- Node.js v18 or later (v22 recommended)
-- Yarn package manager
-- Bitfocus Companion v3.0 or later
-
-### Installation
-
-1. Clone or download this module to your Companion development folder
-2. Install dependencies:
-
-```bash
-yarn install
-```
-
-### Building
-
-Build the module once:
-
-```bash
-yarn build
-```
-
-This compiles TypeScript to the `dist/` directory.
-
-### Development
-
-Run the compiler in watch mode:
-
-```bash
-yarn dev
-```
-
-Files will automatically recompile on save.
 
 ## Features
 
