@@ -1,0 +1,12 @@
+import type { CompanionVariableDefinition, CompanionVariableValues } from '@companion-module/base';
+import type { FramingStateData } from './api.js';
+import type { CameraStateResponse } from './auto-tracking-api.js';
+import type { LicenseData } from './license-api.js';
+export declare function getVariableDefinitions(): CompanionVariableDefinition[];
+export declare function getFramingStatusText(status: number): string;
+export declare function getFramingEnableText(enable: number): string;
+export declare function updateVariablesFromState(cameraId: number, state: FramingStateData): CompanionVariableValues;
+export declare function getAngleModeText(angle: number | undefined): string;
+export declare function updateVariablesFromAutoTracking(cameraId: number, state: CameraStateResponse): CompanionVariableValues;
+export declare function updateVideoMixerVariables(pgmCell: number, layout: number, enabled: boolean, volume?: number): CompanionVariableValues;
+export declare function updateLicenseVariables(licenseData: LicenseData[]): CompanionVariableValues;

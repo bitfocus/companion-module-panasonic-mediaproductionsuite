@@ -1,0 +1,37 @@
+import { InstanceBase, type SomeCompanionConfigField } from '@companion-module/base';
+import { type ModuleConfig } from './config.js';
+import { PanasonicAutoFramingApi, type FramingStateData } from './api.js';
+import { LicenseApi, type LicenseData } from './license-api.js';
+import { AutoTrackingApi, type CameraStateResponse } from './auto-tracking-api.js';
+import { VideoMixerApi } from './video-mixer-api.js';
+export declare class PanasonicAutoFramingInstance extends InstanceBase<ModuleConfig> {
+    config: ModuleConfig;
+    api: PanasonicAutoFramingApi | null;
+    licenseApi: LicenseApi | null;
+    autoTrackingApi: AutoTrackingApi | null;
+    videoMixerApi: VideoMixerApi | null;
+    cameraStates: Map<number, FramingStateData>;
+    autoTrackingStates: Map<number, CameraStateResponse>;
+    licenseData: LicenseData[];
+    videoMixerLayout: number;
+    videoMixerPgmCell: number;
+    videoMixerEnabled: boolean;
+    videoMixerVolume: number;
+    private pollTimer;
+    private isPolling;
+    private consecutiveErrors;
+    private pollCycleCount;
+    private readonly MAX_CONSECUTIVE_ERRORS;
+    private readonly MPS_POLL_INTERVAL;
+    constructor(internal: unknown);
+    init(config: ModuleConfig): Promise<void>;
+    destroy(): Promise<void>;
+    configUpdated(config: ModuleConfig): Promise<void>;
+    getConfigFields(): SomeCompanionConfigField[];
+    private startPolling;
+    private pollAllStates;
+    private pollMpsServices;
+    private stopPolling;
+    private pollCameraStates;
+    private pollIndividualCameras;
+}
