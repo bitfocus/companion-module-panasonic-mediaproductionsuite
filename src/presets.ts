@@ -246,6 +246,7 @@ export function getPresets(): CompanionPresetDefinitions {
                         category: `Camera ${cam}`,
                         name: `Pan Left`,
                         style: {
+                                text: '',
                                 png64: ICONS.LEFT,
 				pngalignment: 'center:center',
 				size: '18',
@@ -271,6 +272,7 @@ export function getPresets(): CompanionPresetDefinitions {
                         category: `Camera ${cam}`,
                         name: `Pan Right`,
                         style: {
+                                text: '',
                                 png64: ICONS.RIGHT,
 				pngalignment: 'center:center',
 				size: '18',
@@ -296,6 +298,7 @@ export function getPresets(): CompanionPresetDefinitions {
                         category: `Camera ${cam}`,
                         name: `Tilt Up`,
                         style: {
+                               text: '',
                                png64: ICONS.UP,
 				pngalignment: 'center:center',
 				size: '18',
@@ -321,6 +324,7 @@ export function getPresets(): CompanionPresetDefinitions {
                         category: `Camera ${cam}`,
                         name: `Tilt Down`,
                         style: {
+                               text: '',
                                png64: ICONS.DOWN,
 				pngalignment: 'center:center',
 				size: '18',
