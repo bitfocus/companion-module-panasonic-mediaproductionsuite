@@ -660,7 +660,7 @@ export function getPresets(): CompanionPresetDefinitions {
                         ],
                 }
 
-                presets[`at_cam${cam}_tracking_start`] = {
+               presets[`at_cam${cam}_tracking_start`] = {
                         type: 'button',
                         category: 'Auto Tracking',
                         name: `AT Cam ${cam} Tracking Start`,
@@ -683,7 +683,7 @@ export function getPresets(): CompanionPresetDefinitions {
                                 },
                         ],
                 }
-
+        }
 
         return presets
 }
