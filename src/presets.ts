@@ -683,7 +683,7 @@ export function getPresets(): CompanionPresetDefinitions {
                                 },
                         ],
                 }
-
+		}
 
         return presets
 }
