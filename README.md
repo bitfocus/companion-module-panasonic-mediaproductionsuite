@@ -20,7 +20,6 @@ This module provides comprehensive control of the Panasonic Media Production Sui
 
 ### Auto Tracking Plugin (Port 1337)
 - **Tracking Control** - Enable/disable, lock/unlock tracking
-- **Presets** - 100 preset slots for camera positions
 - **Camera State** - Real-time status monitoring
 
 ### Video Mixer Plugin (Port 1337)
@@ -29,9 +28,6 @@ This module provides comprehensive control of the Panasonic Media Production Sui
 - **DSK Effects** - Enable/disable downstream key
 - **Audio Control** - Volume adjustment
 - **Fade Effects** - Fade to black/white
-
-### License API (Port 1337)
-- **License Status** - Monitor activation status for all plugins
 
 ### Actions (60+)
 Full control of all four APIs with comprehensive action coverage.
@@ -62,8 +58,6 @@ SetTrackingEnable, SetTrackingLock, PresetExec, PresetDelete, PresetRegist, Came
 ### Video Mixer Plugin (11 commands)
 GetPgmCell, SetPgmCell, SetMultiViewLayout, GetMultiViewLayout, SetVmEnable, GetVmEnableStatus, SetDskEnable, SetAudioVolume, GetAudioVolume, FadeOut, FadeIn
 
-### License API (1 command)
-GetLicenseData
 
 ## Compatibility
 
