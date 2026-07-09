@@ -1,5 +1,5 @@
 import { combineRgb, type CompanionPresetDefinitions } from '@companion-module/base'
-
+import ICONS from './icons.js'
 export function getPresets(): CompanionPresetDefinitions {
         const presets: CompanionPresetDefinitions = {}
 
