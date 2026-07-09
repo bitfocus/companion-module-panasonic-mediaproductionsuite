@@ -64,9 +64,9 @@ export function getPresets(): CompanionPresetDefinitions {
                 presets[`cam${cam}_start`] = {
                         type: 'button',
                         category: `Camera ${cam}`,
-                        name: `Start Tracking`,
+                        name: `Start Framing`,
                         style: {
-                                text: `CAM${cam}\\nSTART`,
+                                text: `CAM${cam}\\nFRAMING\\nSTART`,
                                 size: 'auto',
                                 color: combineRgb(255, 255, 255),
                                 bgcolor: combineRgb(0, 102, 0),
@@ -97,9 +97,9 @@ export function getPresets(): CompanionPresetDefinitions {
                 presets[`cam${cam}_stop`] = {
                         type: 'button',
                         category: `Camera ${cam}`,
-                        name: `Stop Tracking`,
+                        name: `Stop Framing`,
                         style: {
-                                text: `CAM${cam}\\nSTOP`,
+                                text: `CAM${cam}\\nFRAMING\\nSTOP`,
                                 size: 'auto',
                                 color: combineRgb(255, 255, 255),
                                 bgcolor: combineRgb(102, 0, 0),
@@ -121,9 +121,9 @@ export function getPresets(): CompanionPresetDefinitions {
                 presets[`cam${cam}_toggle`] = {
                         type: 'button',
                         category: `Camera ${cam}`,
-                        name: `Toggle Tracking`,
+                        name: `Toggle Framing`,
                         style: {
-                                text: `CAM${cam}\\nTOGGLE`,
+                                text: `CAM${cam}\\nFRAMING\\nTOGGLE`,
                                 size: 'auto',
                                 color: combineRgb(255, 255, 255),
                                 bgcolor: combineRgb(51, 51, 51),
@@ -246,8 +246,9 @@ export function getPresets(): CompanionPresetDefinitions {
                         category: `Camera ${cam}`,
                         name: `Pan Left`,
                         style: {
-                                text: `CAM${cam}\\n◀ PAN`,
-                                size: 'auto',
+                                png64: ICONS.LEFT,
+				pngalignment: 'center:center',
+				size: '18',
                                 color: combineRgb(255, 255, 255),
                                 bgcolor: combineRgb(51, 51, 102),
                         },
@@ -270,8 +271,9 @@ export function getPresets(): CompanionPresetDefinitions {
                         category: `Camera ${cam}`,
                         name: `Pan Right`,
                         style: {
-                                text: `CAM${cam}\\nPAN ▶`,
-                                size: 'auto',
+                                png64: ICONS.RIGHT,
+				pngalignment: 'center:center',
+				size: '18',
                                 color: combineRgb(255, 255, 255),
                                 bgcolor: combineRgb(51, 51, 102),
                         },
@@ -294,8 +296,9 @@ export function getPresets(): CompanionPresetDefinitions {
                         category: `Camera ${cam}`,
                         name: `Tilt Up`,
                         style: {
-                                text: `CAM${cam}\\n▲ TILT`,
-                                size: 'auto',
+                               png64: ICONS.UP,
+				pngalignment: 'center:center',
+				size: '18',
                                 color: combineRgb(255, 255, 255),
                                 bgcolor: combineRgb(51, 51, 102),
                         },
@@ -318,8 +321,9 @@ export function getPresets(): CompanionPresetDefinitions {
                         category: `Camera ${cam}`,
                         name: `Tilt Down`,
                         style: {
-                                text: `CAM${cam}\\nTILT ▼`,
-                                size: 'auto',
+                               png64: ICONS.DOWN,
+				pngalignment: 'center:center',
+				size: '18',
                                 color: combineRgb(255, 255, 255),
                                 bgcolor: combineRgb(51, 51, 102),
                         },
@@ -522,62 +526,7 @@ export function getPresets(): CompanionPresetDefinitions {
                 ],
         }
 
-        presets['vm_get_status'] = {
-                type: 'button',
-                category: 'Video Mixer',
-                name: 'Get VM Status',
-                style: {
-                        text: 'VM\\nSTATUS',
-                        size: 'auto',
-                        color: combineRgb(255, 255, 255),
-                        bgcolor: combineRgb(51, 51, 51),
-                },
-                feedbacks: [
-                        {
-                                feedbackId: 'vmEnabled',
-                                options: {},
-                                style: {
-                                        bgcolor: combineRgb(0, 153, 0),
-                                        color: combineRgb(255, 255, 255),
-                                },
-                        },
-                ],
-                steps: [
-                        {
-                                down: [
-                                        {
-                                                actionId: 'vmGetVmEnableStatus',
-                                                options: {},
-                                        },
-                                ],
-                                up: [],
-                        },
-                ],
-        }
 
-        presets['vm_get_layout'] = {
-                type: 'button',
-                category: 'Video Mixer',
-                name: 'Get Layout',
-                style: {
-                        text: 'GET\\nLAYOUT',
-                        size: 'auto',
-                        color: combineRgb(255, 255, 255),
-                        bgcolor: combineRgb(51, 51, 102),
-                },
-                feedbacks: [],
-                steps: [
-                        {
-                                down: [
-                                        {
-                                                actionId: 'vmGetMultiViewLayout',
-                                                options: {},
-                                        },
-                                ],
-                                up: [],
-                        },
-                ],
-        }
 
         presets['vm_screenshot_pgm'] = {
                 type: 'button',
@@ -659,7 +608,7 @@ export function getPresets(): CompanionPresetDefinitions {
                         category: 'Auto Tracking',
                         name: `AT Cam ${cam} Start`,
                         style: {
-                                text: `AT${cam}\\nSTART`,
+                                text: `AT${cam}\\nTracking\\nSTART`,
                                 size: 'auto',
                                 color: combineRgb(255, 255, 255),
                                 bgcolor: combineRgb(51, 51, 51),
@@ -692,7 +641,7 @@ export function getPresets(): CompanionPresetDefinitions {
                         category: 'Auto Tracking',
                         name: `AT Cam ${cam} Stop`,
                         style: {
-                                text: `AT${cam}\\nSTOP`,
+                                text: `AT${cam}\\nTracking\\nSTOP`,
                                 size: 'auto',
                                 color: combineRgb(255, 255, 255),
                                 bgcolor: combineRgb(102, 0, 0),
@@ -716,7 +665,7 @@ export function getPresets(): CompanionPresetDefinitions {
                         category: 'Auto Tracking',
                         name: `AT Cam ${cam} Tracking Start`,
                         style: {
-                                text: `AT${cam}\\nTRACK`,
+                                text: `AT${cam}\\nTracking\\nSTART`,
                                 size: 'auto',
                                 color: combineRgb(255, 255, 255),
                                 bgcolor: combineRgb(0, 102, 51),
@@ -735,82 +684,6 @@ export function getPresets(): CompanionPresetDefinitions {
                         ],
                 }
 
-                presets[`at_cam${cam}_get_state`] = {
-                        type: 'button',
-                        category: 'Auto Tracking',
-                        name: `AT Cam ${cam} Get State`,
-                        style: {
-                                text: `AT${cam}\\nSTATE`,
-                                size: 'auto',
-                                color: combineRgb(255, 255, 255),
-                                bgcolor: combineRgb(51, 51, 51),
-                        },
-                        feedbacks: [],
-                        steps: [
-                                {
-                                        down: [
-                                                {
-                                                        actionId: 'atCameraState',
-                                                        options: { camera_id: cam },
-                                                },
-                                        ],
-                                        up: [],
-                                },
-                        ],
-                }
-
-                // Auto Tracking presets 1-5
-                for (let preset = 1; preset <= 5; preset++) {
-                        presets[`at_cam${cam}_preset${preset}`] = {
-                                type: 'button',
-                                category: 'Auto Tracking',
-                                name: `AT Cam ${cam} Preset ${preset}`,
-                                style: {
-                                        text: `AT${cam}\\nP${preset}`,
-                                        size: 'auto',
-                                        color: combineRgb(255, 255, 255),
-                                        bgcolor: combineRgb(102, 51, 102),
-                                },
-                                feedbacks: [],
-                                steps: [
-                                        {
-                                                down: [
-                                                        {
-                                                                actionId: 'atPreset',
-                                                                options: { camera_id: cam, mode: 'recall', preset_num: preset },
-                                                        },
-                                                ],
-                                                up: [],
-                                        },
-                                ],
-                        }
-                }
-        }
-
-        // License preset
-        presets['license_refresh'] = {
-                type: 'button',
-                category: 'License',
-                name: 'Refresh License',
-                style: {
-                        text: 'LICENSE\\nREFRESH',
-                        size: 'auto',
-                        color: combineRgb(255, 255, 255),
-                        bgcolor: combineRgb(51, 51, 51),
-                },
-                feedbacks: [],
-                steps: [
-                        {
-                                down: [
-                                        {
-                                                actionId: 'getLicenseData',
-                                                options: {},
-                                        },
-                                ],
-                                up: [],
-                        },
-                ],
-        }
 
         return presets
 }

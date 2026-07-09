@@ -209,18 +209,4 @@ export function updateVideoMixerVariables(pgmCell: number, layout: number, enabl
         return values
 }
 
-export function updateLicenseVariables(licenseData: LicenseData[]): CompanionVariableValues {
-        const values: CompanionVariableValues = {}
 
-        for (const license of licenseData) {
-                if (license.PluginName === 'Auto Framing Plugin') {
-                        values.license_autoframing = license.LicenseState
-                } else if (license.PluginName === 'Auto Tracking Plugin') {
-                        values.license_autotracking = license.LicenseState
-                } else if (license.PluginName === 'Video Mixer Plugin') {
-                        values.license_videomixer = license.LicenseState
-                }
-        }
-
-        return values
-}
