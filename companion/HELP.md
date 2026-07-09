@@ -180,19 +180,6 @@ Each camera (1-10) has the following variables. Replace `1` with the camera numb
 
 ---
 
-## License API
-
-### Actions
-
-| Action | Description |
-|--------|-------------|
-| **Get License Data** | Query license status for all plugins |
-
-### Feedbacks
-
-| Feedback | Description | Default Color |
-|----------|-------------|---------------|
-| **License Active** | True when specified license is active | Green |
 
 ### Variables
 
