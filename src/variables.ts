@@ -1,7 +1,6 @@
 import type { CompanionVariableDefinition, CompanionVariableValues } from '@companion-module/base'
 import type { FramingStateData } from './api.js'
 import type { CameraStateResponse } from './auto-tracking-api.js'
-import type { LicenseData } from './license-api.js'
 
 export function getVariableDefinitions(): CompanionVariableDefinition[] {
         const variables: CompanionVariableDefinition[] = []
@@ -100,18 +99,6 @@ export function getVariableDefinitions(): CompanionVariableDefinition[] {
                         variableId: 'vm_volume',
                         name: 'Video Mixer Volume',
                 },
-                {
-                        variableId: 'license_autoframing',
-                        name: 'Auto Framing License Status',
-                },
-                {
-                        variableId: 'license_autotracking',
-                        name: 'Auto Tracking License Status',
-                },
-                {
-                        variableId: 'license_videomixer',
-                        name: 'Video Mixer License Status',
-                }
         )
 
         return variables

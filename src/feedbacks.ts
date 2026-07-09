@@ -347,32 +347,5 @@ export function getFeedbacks(instance: PanasonicAutoFramingInstance): CompanionF
                         },
                 },
 
-                licenseActivated: {
-                        type: 'boolean',
-                        name: 'License: Plugin Activated',
-                        description: 'Check if a plugin has an activated license',
-                        defaultStyle: {
-                                bgcolor: combineRgb(0, 204, 0),
-                                color: combineRgb(0, 0, 0),
-                        },
-                        options: [
-                                {
-                                        type: 'dropdown',
-                                        id: 'plugin',
-                                        label: 'Plugin',
-                                        choices: [
-                                                { id: 'Auto Framing Plugin', label: 'Auto Framing Plugin' },
-                                                { id: 'Auto Tracking Plugin', label: 'Auto Tracking Plugin' },
-                                                { id: 'Video Mixer Plugin', label: 'Video Mixer Plugin' },
-                                        ],
-                                        default: 'Auto Framing Plugin',
-                                },
-                        ],
-                        callback: (feedback) => {
-                                const pluginName = String(feedback.options.plugin)
-                                const plugin = instance.licenseData.find((p) => p.PluginName === pluginName)
-                                return plugin?.LicenseState === 'Activated'
-                        },
-                },
         }
 }

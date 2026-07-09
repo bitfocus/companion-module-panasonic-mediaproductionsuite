@@ -1167,25 +1167,6 @@ export function getActions(instance: PanasonicAutoFramingInstance): CompanionAct
                         },
                 },
 
-                getLicenseData: {
-                        name: 'License: Get License Data',
-                        description: 'Get license status of all paid plugins',
-                        options: [],
-                        callback: async () => {
-                                if (!instance.licenseApi) return
-                                try {
-                                        const response = await instance.licenseApi.getLicenseData()
-                                        if (response.Response === 'ack' && response.LicenseData) {
-                                                instance.licenseData = response.LicenseData
-                                                instance.log('info', `License data received: ${response.LicenseData.length} plugins`)
-                                                instance.checkFeedbacks()
-                                        }
-                                } catch (error) {
-                                        instance.log('error', `Failed to get license data: ${error}`)
-                                }
-                        },
-                },
-
                 atCameraControl: {
                         name: 'Auto Tracking: Camera Control',
                         description: 'Enable or disable Auto Tracking function for a camera',
