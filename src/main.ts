@@ -12,7 +12,7 @@ import { VideoMixerApi } from './video-mixer-api.js'
 import { getActions } from './actions.js'
 import { getFeedbacks } from './feedbacks.js'
 import { getPresets } from './presets.js'
-import { getVariableDefinitions, updateVariablesFromState, updateVariablesFromAutoTracking, updateVideoMixerVariables, updateLicenseVariables } from './variables.js'
+import { getVariableDefinitions, updateVariablesFromState, updateVariablesFromAutoTracking, updateVideoMixerVariables } from './variables.js'
 
 export class PanasonicAutoFramingInstance extends InstanceBase<ModuleConfig> {
         public config: ModuleConfig = {
