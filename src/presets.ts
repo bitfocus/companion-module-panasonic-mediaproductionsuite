@@ -9,7 +9,7 @@ export function getPresets(): CompanionPresetDefinitions {
                         category: `Camera ${cam}`,
                         name: `Enable Framing`,
                         style: {
-                                text: `CAM${cam}\\nENABLE`,
+                                text: `CAM${cam}\\nFRAMING\\nENABLE`,
                                 size: 'auto',
                                 color: combineRgb(255, 255, 255),
                                 bgcolor: combineRgb(51, 51, 51),
@@ -42,7 +42,7 @@ export function getPresets(): CompanionPresetDefinitions {
                         category: `Camera ${cam}`,
                         name: `Disable Framing`,
                         style: {
-                                text: `CAM${cam}\\nDISABLE`,
+                                text: `CAM${cam}\\nFRAMING\\nDISABLE`,
                                 size: 'auto',
                                 color: combineRgb(255, 255, 255),
                                 bgcolor: combineRgb(102, 0, 0),
@@ -612,7 +612,7 @@ export function getPresets(): CompanionPresetDefinitions {
                         category: 'Auto Tracking',
                         name: `AT Cam ${cam} Start`,
                         style: {
-                                text: `AT${cam}\\nTracking\\nSTART`,
+                                text: `Cam${cam}\\nTracking\\nSTART`,
                                 size: 'auto',
                                 color: combineRgb(255, 255, 255),
                                 bgcolor: combineRgb(51, 51, 51),
@@ -645,7 +645,7 @@ export function getPresets(): CompanionPresetDefinitions {
                         category: 'Auto Tracking',
                         name: `AT Cam ${cam} Stop`,
                         style: {
-                                text: `AT${cam}\\nTracking\\nSTOP`,
+                                text: `Cam${cam}\\nTracking\\nSTOP`,
                                 size: 'auto',
                                 color: combineRgb(255, 255, 255),
                                 bgcolor: combineRgb(102, 0, 0),
@@ -669,7 +669,7 @@ export function getPresets(): CompanionPresetDefinitions {
                         category: 'Auto Tracking',
                         name: `AT Cam ${cam} Tracking Start`,
                         style: {
-                                text: `AT${cam}\\nTracking\\nSTART`,
+                                text: `Cam${cam}\\nTracking\\nSTART`,
                                 size: 'auto',
                                 color: combineRgb(255, 255, 255),
                                 bgcolor: combineRgb(0, 102, 51),
