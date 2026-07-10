@@ -6,7 +6,7 @@ export function getPresets(): CompanionPresetDefinitions {
         for (let cam = 1; cam <= 4; cam++) {
                 presets[`cam${cam}_enable`] = {
                         type: 'button',
-                        category: `Camera ${cam}`,
+                        category: `Autoframing Camera ${cam}`,
                         name: `Enable Framing`,
                         style: {
                                 text: `CAM${cam}\\nFRAMING\\nENABLE`,
@@ -39,7 +39,7 @@ export function getPresets(): CompanionPresetDefinitions {
 
                 presets[`cam${cam}_disable`] = {
                         type: 'button',
-                        category: `Camera ${cam}`,
+                        category: `Autoframing Camera ${cam}`,
                         name: `Disable Framing`,
                         style: {
                                 text: `CAM${cam}\\nFRAMING\\nDISABLE`,
@@ -63,7 +63,7 @@ export function getPresets(): CompanionPresetDefinitions {
 
                 presets[`cam${cam}_start`] = {
                         type: 'button',
-                        category: `Camera ${cam}`,
+                        category: `Autoframing Camera ${cam}`,
                         name: `Start Framing`,
                         style: {
                                 text: `CAM${cam}\\nFRAMING\\nSTART`,
@@ -96,7 +96,7 @@ export function getPresets(): CompanionPresetDefinitions {
 
                 presets[`cam${cam}_stop`] = {
                         type: 'button',
-                        category: `Camera ${cam}`,
+                        category: `Autoframing Camera ${cam}`,
                         name: `Stop Framing`,
                         style: {
                                 text: `CAM${cam}\\nFRAMING\\nSTOP`,
@@ -120,7 +120,7 @@ export function getPresets(): CompanionPresetDefinitions {
 
                 presets[`cam${cam}_toggle`] = {
                         type: 'button',
-                        category: `Camera ${cam}`,
+                        category: `Autoframing Camera ${cam}`,
                         name: `Toggle Framing`,
                         style: {
                                 text: `CAM${cam}\\nFRAMING\\nTOGGLE`,
@@ -153,7 +153,7 @@ export function getPresets(): CompanionPresetDefinitions {
 
                 presets[`cam${cam}_autozoom`] = {
                         type: 'button',
-                        category: `Camera ${cam}`,
+                        category: `Autoframing Camera ${cam}`,
                         name: `Auto Zoom Toggle`,
                         style: {
                                 text: `CAM${cam}\\nAUTO\\nZOOM`,
@@ -186,7 +186,7 @@ export function getPresets(): CompanionPresetDefinitions {
 
                 presets[`cam${cam}_facesearch`] = {
                         type: 'button',
-                        category: `Camera ${cam}`,
+                        category: `Autoframing Camera ${cam}`,
                         name: `Auto Face Search`,
                         style: {
                                 text: `CAM${cam}\\nFACE\\nSEARCH`,
@@ -219,7 +219,7 @@ export function getPresets(): CompanionPresetDefinitions {
 
                 presets[`cam${cam}_mapping`] = {
                         type: 'button',
-                        category: `Camera ${cam}`,
+                        category: `Autoframing Camera ${cam}`,
                         name: `Frame Mapping`,
                         style: {
                                 text: `CAM${cam}\\nMAPPING`,
@@ -243,7 +243,7 @@ export function getPresets(): CompanionPresetDefinitions {
 
                 presets[`cam${cam}_pan_left`] = {
                         type: 'button',
-                        category: `Camera ${cam}`,
+                        category: `Autoframing Camera ${cam}`,
                         name: `Pan Left`,
                         style: {
                                 text: '',
@@ -269,7 +269,7 @@ export function getPresets(): CompanionPresetDefinitions {
 
                 presets[`cam${cam}_pan_right`] = {
                         type: 'button',
-                        category: `Camera ${cam}`,
+                        category: `Autoframing Camera ${cam}`,
                         name: `Pan Right`,
                         style: {
                                 text: '',
@@ -295,7 +295,7 @@ export function getPresets(): CompanionPresetDefinitions {
 
                 presets[`cam${cam}_tilt_up`] = {
                         type: 'button',
-                        category: `Camera ${cam}`,
+                        category: `Autoframing Camera ${cam}`,
                         name: `Tilt Up`,
                         style: {
                                text: '',
@@ -321,7 +321,7 @@ export function getPresets(): CompanionPresetDefinitions {
 
                 presets[`cam${cam}_tilt_down`] = {
                         type: 'button',
-                        category: `Camera ${cam}`,
+                        category: `Autoframing Camera ${cam}`,
                         name: `Tilt Down`,
                         style: {
                                text: '',
@@ -347,7 +347,7 @@ export function getPresets(): CompanionPresetDefinitions {
 
                 presets[`cam${cam}_zoom_in`] = {
                         type: 'button',
-                        category: `Camera ${cam}`,
+                        category: `Autoframing Camera ${cam}`,
                         name: `Zoom In`,
                         style: {
                                 text: `CAM${cam}\\nZOOM +`,
@@ -371,7 +371,7 @@ export function getPresets(): CompanionPresetDefinitions {
 
                 presets[`cam${cam}_zoom_out`] = {
                         type: 'button',
-                        category: `Camera ${cam}`,
+                        category: `Autoframing Camera ${cam}`,
                         name: `Zoom Out`,
                         style: {
                                 text: `CAM${cam}\\nZOOM -`,
@@ -396,7 +396,7 @@ export function getPresets(): CompanionPresetDefinitions {
                 for (let preset = 1; preset <= 5; preset++) {
                         presets[`cam${cam}_preset${preset}_recall`] = {
                                 type: 'button',
-                                category: `Camera ${cam}`,
+                                category: `Autoframing Camera ${cam}`,
                                 name: `Preset ${preset} Recall`,
                                 style: {
                                         text: `CAM${cam}\\nP${preset}`,
@@ -422,7 +422,7 @@ export function getPresets(): CompanionPresetDefinitions {
                 for (let preset = 1; preset <= 5; preset++) {
                         presets[`cam${cam}_targetframe${preset}_recall`] = {
                                 type: 'button',
-                                category: `Camera ${cam}`,
+                                category: `Autoframing Camera ${cam}`,
                                 name: `Target Frame ${preset}`,
                                 style: {
                                         text: `CAM${cam}\\nTF${preset}`,
