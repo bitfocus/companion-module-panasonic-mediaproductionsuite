@@ -89,11 +89,26 @@ export class VideoMixerApi {
 		const result: Record<string, string | number> = {}
 
 		for (const part of parts) {
-			const colonIndex = part.indexOf(':')
+			const trimmedPart = part.trim()
+			const colonIndex = trimmedPart.indexOf(':')
 			if (colonIndex > 0) {
-				const key = part.substring(0, colonIndex).trim()
-				const value = part.substring(colonIndex + 1).trim()
-				if (!isNaN(Number(value))) {
+				const key = trimmedPart.substring(0, colonIndex).trim()
+				const value = trimmedPart.substring(colonIndex + 1).trim()
+
+				if (key === 'resp') {
+					const nestedParts = value.split(':')
+					const respValue = nestedParts[0]
+					const nestedNumber = nestedParts[1]
+
+					if (respValue === 'pgm' && nestedNumber !== undefined && !isNaN(Number(nestedNumber))) {
+						result[key] = 'ack'
+						result.cell = parseInt(nestedNumber, 10)
+					} else if (respValue === 'nack') {
+						result[key] = 'nack'
+					} else {
+						result[key] = respValue
+					}
+				} else if (!isNaN(Number(value))) {
 					result[key] = parseInt(value, 10)
 				} else {
 					result[key] = value
