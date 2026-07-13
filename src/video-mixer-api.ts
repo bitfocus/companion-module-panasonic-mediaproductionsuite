@@ -106,6 +106,9 @@ export class VideoMixerApi {
 					} else if (respValue === 'volume' && nestedNumber !== undefined && !isNaN(Number(nestedNumber))) {
 						result[key] = 'ack'
 						result.volume = parseInt(nestedNumber, 10)
+					} else if (respValue === 'enable' && nestedNumber !== undefined && !isNaN(Number(nestedNumber))) {
+						result[key] = 'ack'
+						result.enable = parseInt(nestedNumber, 10)
 					} else if (respValue === 'nack') {
 						result[key] = 'nack'
 					} else {
