@@ -114,8 +114,10 @@ export function getFramingStatusText(status: number): string {
                         return 'Lost'
                 case 3:
                         return 'Searching'
+                case 4:
+                        return 'Disabled'
                 default:
-                        return 'Unknown'
+                        return `Unknown (${status})`
         }
 }
 
@@ -195,5 +197,4 @@ export function updateVideoMixerVariables(pgmCell: number, layout: number, enabl
         }
         return values
 }
-
 
