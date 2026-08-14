@@ -7,30 +7,46 @@ async function httpGet(
         urlString: string,
         accept: string,
         timeoutMs: number,
+        debugLog?: (message: string) => void,
 ): Promise<{ status: number; contentType: string; data: Buffer }> {
         return new Promise((resolve, reject) => {
                 const url = new URL(urlString)
                 const isHttps = url.protocol === 'https:'
                 const httpModule = isHttps ? https : http
+                let responseStarted = false
+                let receivedBytes = 0
                 
                 const options = {
                         hostname: url.hostname,
                         port: url.port || (isHttps ? 443 : 80),
                         path: url.pathname + url.search,
                         method: 'GET',
-                        headers: { 'Accept': accept },
+                        agent: false,
+                        headers: {
+                                'Accept': accept,
+                                'Connection': 'close',
+                                'User-Agent': 'Bitfocus-Companion-MPS/1.0.4',
+                        },
                         timeout: timeoutMs,
                 }
 
                 const request = httpModule.request(options, (response) => {
+                        responseStarted = true
+                        debugLog?.(`HTTP response started: ${response.statusCode ?? 0} ${JSON.stringify(response.headers)}`)
+
                         if (response.statusCode && response.statusCode >= 300 && response.statusCode < 400 && response.headers.location) {
-                                httpGet(response.headers.location, accept, timeoutMs).then(resolve).catch(reject)
+                                response.resume()
+                                httpGet(response.headers.location, accept, timeoutMs, debugLog).then(resolve).catch(reject)
                                 return
                         }
 
                         const chunks: Buffer[] = []
-                        response.on('data', (chunk: Buffer) => chunks.push(chunk))
+                        response.on('data', (chunk: Buffer) => {
+                                receivedBytes += chunk.length
+                                chunks.push(chunk)
+                        })
                         response.on('end', () => {
+                                debugLog?.(`HTTP response completed: ${receivedBytes} bytes`)
                                 resolve({
                                         status: response.statusCode ?? 500,
                                         contentType: response.headers['content-type'] ?? '',
@@ -45,6 +61,7 @@ async function httpGet(
                 })
 
                 request.on('timeout', () => {
+                        debugLog?.(`HTTP request timeout: responseStarted=${responseStarted}, receivedBytes=${receivedBytes}`)
                         request.destroy(new Error('Request timeout'))
                 })
 
@@ -190,7 +207,9 @@ export class PanasonicAutoFramingApi {
 
                         try {
                                 const timeoutMs = requestType === 'poll' ? this.POLL_TIMEOUT_MS : this.ACTION_TIMEOUT_MS
-                                const response = await httpGet(url, 'application/json', timeoutMs)
+                                const response = await httpGet(url, 'application/json', timeoutMs, (message) => {
+                                        this.log('debug', `${cmd}: ${message}`)
+                                })
 
                                 if (response.status < 200 || response.status >= 300) {
                                         throw new Error(`HTTP error: ${response.status}`)
@@ -346,7 +365,9 @@ export class PanasonicAutoFramingApi {
                 try {
                         return await this.runExclusive('action', async () => {
                                 this.log('debug', `Getting image: ${url}`)
-                                const response = await httpGet(url, 'image/jpeg', this.ACTION_TIMEOUT_MS)
+                                const response = await httpGet(url, 'image/jpeg', this.ACTION_TIMEOUT_MS, (message) => {
+                                        this.log('debug', `GetImage: ${message}`)
+                                })
 
                                 if (response.status < 200 || response.status >= 300) {
                                         throw new Error(`HTTP error: ${response.status}`)
