@@ -109,12 +109,20 @@ export class PanasonicAutoFramingInstance extends InstanceBase<ModuleConfig> {
         }
 
         private async pollAllStates(): Promise<void> {
-                this.pollCycleCount++
+                if (this.isPolling) return
 
-                await this.pollCameraStates()
+                this.isPolling = true
 
-                if (this.pollCycleCount === 1 || this.pollCycleCount % this.MPS_POLL_INTERVAL === 0) {
-                        await this.pollMpsServices()
+                try {
+                        this.pollCycleCount++
+
+                        await this.pollCameraStates()
+
+                        if (this.pollCycleCount === 1 || this.pollCycleCount % this.MPS_POLL_INTERVAL === 0) {
+                                await this.pollMpsServices()
+                        }
+                } finally {
+                        this.isPolling = false
                 }
         }
 
@@ -178,7 +186,7 @@ export class PanasonicAutoFramingInstance extends InstanceBase<ModuleConfig> {
                                 this.updateStatus(InstanceStatus.Ok)
                         }
 
-                        this.checkFeedbacks('vmPgmCell', 'vmEnabled', 'atTracking', 'atCameraConnected')
+                        this.checkFeedbacks('vmPgmCell', 'vmEnabled', 'atTrackingActive', 'atConnectionState')
                 } catch (error) {
                         this.log('debug', `MPS services poll error: ${error instanceof Error ? error.message : 'Unknown error'}`)
                 }
@@ -193,9 +201,7 @@ export class PanasonicAutoFramingInstance extends InstanceBase<ModuleConfig> {
         }
 
         private async pollCameraStates(): Promise<void> {
-                if (!this.api || this.isPolling) return
-
-                this.isPolling = true
+                if (!this.api) return
 
                 try {
                         const response = await this.api.framingState(0)
@@ -240,8 +246,6 @@ export class PanasonicAutoFramingInstance extends InstanceBase<ModuleConfig> {
                         } else {
                                 this.updateStatus(InstanceStatus.Connecting, 'Retrying...')
                         }
-                } finally {
-                        this.isPolling = false
                 }
         }
 
