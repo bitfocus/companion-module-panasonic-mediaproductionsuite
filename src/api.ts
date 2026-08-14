@@ -25,7 +25,7 @@ async function httpGet(
                         headers: {
                                 'Accept': accept,
                                 'Connection': 'close',
-                                'User-Agent': 'Bitfocus-Companion-MPS/1.0.4',
+                                'User-Agent': 'Bitfocus-Companion-MPS/1.0.3',
                         },
                         timeout: timeoutMs,
                 }
