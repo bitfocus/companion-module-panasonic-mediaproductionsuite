@@ -3,7 +3,11 @@ import http from 'http'
 import https from 'https'
 import { URL } from 'url'
 
-async function httpGet(urlString: string, accept: string): Promise<{ status: number; contentType: string; data: Buffer }> {
+async function httpGet(
+        urlString: string,
+        accept: string,
+        timeoutMs: number,
+): Promise<{ status: number; contentType: string; data: Buffer }> {
         return new Promise((resolve, reject) => {
                 const url = new URL(urlString)
                 const isHttps = url.protocol === 'https:'
@@ -15,12 +19,12 @@ async function httpGet(urlString: string, accept: string): Promise<{ status: num
                         path: url.pathname + url.search,
                         method: 'GET',
                         headers: { 'Accept': accept },
-                        timeout: 3000,
+                        timeout: timeoutMs,
                 }
 
                 const request = httpModule.request(options, (response) => {
                         if (response.statusCode && response.statusCode >= 300 && response.statusCode < 400 && response.headers.location) {
-                                httpGet(response.headers.location, accept).then(resolve).catch(reject)
+                                httpGet(response.headers.location, accept, timeoutMs).then(resolve).catch(reject)
                                 return
                         }
 
@@ -41,8 +45,7 @@ async function httpGet(urlString: string, accept: string): Promise<{ status: num
                 })
 
                 request.on('timeout', () => {
-                        request.destroy()
-                        reject(new Error('Request timeout'))
+                        request.destroy(new Error('Request timeout'))
                 })
 
                 request.end()
@@ -118,8 +121,14 @@ export interface PersonData {
 }
 
 export class PanasonicAutoFramingApi {
+        private readonly ACTION_TIMEOUT_MS = 3000
+        private readonly POLL_TIMEOUT_MS = 1000
+        private readonly TIMEOUT_COOLDOWN_MS = 15000
         private config: ModuleConfig
         private log: (level: 'info' | 'warn' | 'error' | 'debug', message: string) => void
+        private requestQueue: Promise<void> = Promise.resolve()
+        private queuedRequestCount = 0
+        private cooldownUntil = 0
 
         constructor(config: ModuleConfig, log: (level: 'info' | 'warn' | 'error' | 'debug', message: string) => void) {
                 this.config = config
@@ -128,6 +137,11 @@ export class PanasonicAutoFramingApi {
 
         updateConfig(config: ModuleConfig): void {
                 this.config = config
+                this.cooldownUntil = 0
+        }
+
+        canPoll(): boolean {
+                return this.queuedRequestCount === 0 && Date.now() >= this.cooldownUntil
         }
 
         private buildUrl(cmd: string, params: Record<string, string | number>): string {
@@ -137,30 +151,69 @@ export class PanasonicAutoFramingApi {
                 return `http://${this.config.host}:${this.config.port}/cgi-bin/auto_framing?cmd=${cmd}&${paramString}`
         }
 
-        async sendCommand(cmd: string, params: Record<string, string | number>): Promise<ApiResponse> {
-                const url = this.buildUrl(cmd, params)
-                this.log('debug', `Sending command: ${url}`)
+        private async runExclusive<T>(requestType: 'action' | 'poll', callback: () => Promise<T>): Promise<T> {
+                if (requestType === 'poll' && !this.canPoll()) {
+                        throw new Error('Polling skipped while Auto Framing API is busy or cooling down')
+                }
+
+                const previousRequest = this.requestQueue
+                let releaseRequest!: () => void
+                this.requestQueue = new Promise<void>((resolve) => {
+                        releaseRequest = resolve
+                })
+                this.queuedRequestCount++
+
+                await previousRequest
 
                 try {
-                        const response = await httpGet(url, 'application/json')
-
-                        if (response.status < 200 || response.status >= 300) {
-                                throw new Error(`HTTP error: ${response.status}`)
+                        const cooldownRemaining = this.cooldownUntil - Date.now()
+                        if (cooldownRemaining > 0) {
+                                throw new Error(`Auto Framing API cooling down for ${Math.ceil(cooldownRemaining / 1000)} seconds`)
                         }
 
-                        const data = JSON.parse(response.data.toString()) as ApiResponse
-                        this.log('debug', `Response: ${JSON.stringify(data)}`)
-
-                        if (data.Response === 'nack') {
-                                this.log('warn', `Command ${cmd} returned NACK: ${data.NACKDetail || 'Unknown error'}`)
-                        }
-
-                        return data
-                } catch (error) {
-                        const errorMessage = error instanceof Error ? error.message : 'Unknown error'
-                        this.log('error', `Failed to send command ${cmd}: ${errorMessage}`)
-                        throw error
+                        return await callback()
+                } finally {
+                        this.queuedRequestCount--
+                        releaseRequest()
                 }
+        }
+
+        async sendCommand(
+                cmd: string,
+                params: Record<string, string | number>,
+                requestType: 'action' | 'poll' = 'action',
+        ): Promise<ApiResponse> {
+                const url = this.buildUrl(cmd, params)
+
+                return this.runExclusive(requestType, async () => {
+                        this.log('debug', `Sending command: ${url}`)
+
+                        try {
+                                const timeoutMs = requestType === 'poll' ? this.POLL_TIMEOUT_MS : this.ACTION_TIMEOUT_MS
+                                const response = await httpGet(url, 'application/json', timeoutMs)
+
+                                if (response.status < 200 || response.status >= 300) {
+                                        throw new Error(`HTTP error: ${response.status}`)
+                                }
+
+                                const data = JSON.parse(response.data.toString()) as ApiResponse
+                                this.log('debug', `Response: ${JSON.stringify(data)}`)
+
+                                if (data.Response === 'nack') {
+                                        this.log('warn', `Command ${cmd} returned NACK: ${data.NACKDetail || 'Unknown error'}`)
+                                }
+
+                                return data
+                        } catch (error) {
+                                const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+                                if (errorMessage === 'Request timeout') {
+                                        this.cooldownUntil = Date.now() + this.TIMEOUT_COOLDOWN_MS
+                                        this.log('warn', 'Auto Framing API timed out; pausing requests for 15 seconds')
+                                }
+                                this.log('error', `Failed to send command ${cmd}: ${errorMessage}`)
+                                throw error
+                        }
+                })
         }
 
         async framingEnable(id: number, enable: boolean): Promise<ApiResponse> {
@@ -172,7 +225,7 @@ export class PanasonicAutoFramingApi {
         }
 
         async framingState(id: number): Promise<ApiResponse> {
-                return this.sendCommand('FramingState', { id })
+                return this.sendCommand('FramingState', { id }, 'poll')
         }
 
         async trackingControl(
@@ -289,24 +342,26 @@ export class PanasonicAutoFramingApi {
                 number?: number
         ): Promise<Buffer | null> {
                 const url = this.getImageUrl(category, id, number)
-                this.log('debug', `Getting image: ${url}`)
 
                 try {
-                        const response = await httpGet(url, 'image/jpeg')
+                        return await this.runExclusive('action', async () => {
+                                this.log('debug', `Getting image: ${url}`)
+                                const response = await httpGet(url, 'image/jpeg', this.ACTION_TIMEOUT_MS)
 
-                        if (response.status < 200 || response.status >= 300) {
-                                throw new Error(`HTTP error: ${response.status}`)
-                        }
-
-                        if (response.contentType.includes('image/jpeg')) {
-                                return response.data
-                        } else {
-                                const data = JSON.parse(response.data.toString()) as ApiResponse
-                                if (data.Response === 'nack') {
-                                        this.log('warn', `GetImage returned NACK: ${data.NACKDetail || 'Unknown error'}`)
+                                if (response.status < 200 || response.status >= 300) {
+                                        throw new Error(`HTTP error: ${response.status}`)
                                 }
-                                return null
-                        }
+
+                                if (response.contentType.includes('image/jpeg')) {
+                                        return response.data
+                                } else {
+                                        const data = JSON.parse(response.data.toString()) as ApiResponse
+                                        if (data.Response === 'nack') {
+                                                this.log('warn', `GetImage returned NACK: ${data.NACKDetail || 'Unknown error'}`)
+                                        }
+                                        return null
+                                }
+                        })
                 } catch (error) {
                         const errorMessage = error instanceof Error ? error.message : 'Unknown error'
                         this.log('error', `Failed to get image: ${errorMessage}`)

@@ -81,6 +81,7 @@ export function getFeedbacks(instance: PanasonicAutoFramingInstance): CompanionF
                                                 { id: 1, label: 'Tracking' },
                                                 { id: 2, label: 'Lost' },
                                                 { id: 3, label: 'Searching' },
+                                                { id: 4, label: 'Disabled' },
                                         ],
                                         default: 1,
                                 },
