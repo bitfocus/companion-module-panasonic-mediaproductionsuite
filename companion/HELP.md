@@ -11,6 +11,8 @@ This module controls the **Panasonic Media Production Suite** including Auto Fra
 | **MPS Port** | Port for License, Auto Tracking, and Video Mixer APIs | 1337 |
 | **Poll Interval** | How often to poll camera status (ms) | 1000 |
 | **Camera Count** | Maximum cameras to poll (1-100) | 10 |
+| **Poll Auto Tracking Plugin** | Poll Auto Tracking status on port 1337 | Off |
+| **Poll Video Mixer Plugin** | Poll Video Mixer status on port 1337 | Off |
 
 ## Requirements
 
@@ -88,7 +90,7 @@ This module controls the **Panasonic Media Production Suite** including Auto Fra
 |----------|-------------|---------------|
 | **Framing Enabled** | True when Auto Framing is enabled | Green |
 | **Framing Running** | True when tracking is actively running | Green |
-| **Framing Status** | Check specific status (Stopped/Tracking/Lost/Searching) | Green |
+| **Framing Status** | Check specific status (Stopped/Tracking/Lost/Searching/Disabled) | Green |
 | **Auto Zoom Enabled** | True when Auto Zoom is enabled | Cyan |
 | **Auto Face Search Enabled** | True when Auto Face Search is enabled | Orange |
 | **PTZ Moving** | True when camera is actively moving | Yellow |
@@ -106,7 +108,7 @@ Each camera (1-10) has the following variables. Replace `1` with the camera numb
 | `$(panasonic-mps:cam1_ip)` | Camera IP address |
 | `$(panasonic-mps:cam1_framing_enabled)` | Framing enable status |
 | `$(panasonic-mps:cam1_framing_running)` | Running/Stopped |
-| `$(panasonic-mps:cam1_framing_status)` | Status (Stopped/Tracking/Lost/Searching) |
+| `$(panasonic-mps:cam1_framing_status)` | Status (Stopped/Tracking/Lost/Searching/Disabled) |
 | `$(panasonic-mps:cam1_auto_zoom)` | Auto Zoom On/Off |
 | `$(panasonic-mps:cam1_auto_face_search)` | Auto Face Search On/Off |
 | `$(panasonic-mps:cam1_person_count)` | Number of persons detected |

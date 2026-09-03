@@ -20,6 +20,8 @@ export class PanasonicAutoFramingInstance extends InstanceBase<ModuleConfig> {
                 mpsPort: 1337,
                 pollInterval: 1000,
                 cameraCount: 10,
+                pollAutoTracking: false,
+                pollVideoMixer: false,
         }
 
         public api: PanasonicAutoFramingApi | null = null
@@ -109,12 +111,21 @@ export class PanasonicAutoFramingInstance extends InstanceBase<ModuleConfig> {
         }
 
         private async pollAllStates(): Promise<void> {
-                this.pollCycleCount++
+                if (this.isPolling) return
 
-                await this.pollCameraStates()
+                this.isPolling = true
 
-                if (this.pollCycleCount === 1 || this.pollCycleCount % this.MPS_POLL_INTERVAL === 0) {
-                        await this.pollMpsServices()
+                try {
+                        this.pollCycleCount++
+
+                        await this.pollCameraStates()
+
+                        const shouldPollMpsServices = this.config.pollAutoTracking || this.config.pollVideoMixer
+                        if (shouldPollMpsServices && (this.pollCycleCount === 1 || this.pollCycleCount % this.MPS_POLL_INTERVAL === 0)) {
+                                await this.pollMpsServices()
+                        }
+                } finally {
+                        this.isPolling = false
                 }
         }
 
@@ -123,7 +134,7 @@ export class PanasonicAutoFramingInstance extends InstanceBase<ModuleConfig> {
                 this.log('debug', 'Polling MPS services...')
 
                 try {
-                        if (this.videoMixerApi) {
+                        if (this.config.pollVideoMixer && this.videoMixerApi) {
                                 this.log('debug', 'Polling Video Mixer API...')
                                 const vmEnabled = await this.videoMixerApi.getVmEnableStatus()
                                 if (vmEnabled.resp === 'ack' && vmEnabled.enable !== undefined) {
@@ -156,7 +167,7 @@ export class PanasonicAutoFramingInstance extends InstanceBase<ModuleConfig> {
                                 this.setVariableValues(vmVariables)
                         }
 
-                        if (this.autoTrackingApi) {
+                        if (this.config.pollAutoTracking && this.autoTrackingApi) {
                                 const maxCameras = this.config.cameraCount ?? 10
                                 for (let cameraId = 1; cameraId <= maxCameras; cameraId++) {
                                         try {
@@ -178,7 +189,7 @@ export class PanasonicAutoFramingInstance extends InstanceBase<ModuleConfig> {
                                 this.updateStatus(InstanceStatus.Ok)
                         }
 
-                        this.checkFeedbacks('vmPgmCell', 'vmEnabled', 'atTracking', 'atCameraConnected')
+                        this.checkFeedbacks('vmPgmCell', 'vmEnabled', 'atTrackingActive', 'atConnectionState')
                 } catch (error) {
                         this.log('debug', `MPS services poll error: ${error instanceof Error ? error.message : 'Unknown error'}`)
                 }
@@ -193,9 +204,7 @@ export class PanasonicAutoFramingInstance extends InstanceBase<ModuleConfig> {
         }
 
         private async pollCameraStates(): Promise<void> {
-                if (!this.api || this.isPolling) return
-
-                this.isPolling = true
+                if (!this.api || !this.api.canPoll()) return
 
                 try {
                         const response = await this.api.framingState(0)
@@ -240,8 +249,6 @@ export class PanasonicAutoFramingInstance extends InstanceBase<ModuleConfig> {
                         } else {
                                 this.updateStatus(InstanceStatus.Connecting, 'Retrying...')
                         }
-                } finally {
-                        this.isPolling = false
                 }
         }
 
@@ -252,6 +259,8 @@ export class PanasonicAutoFramingInstance extends InstanceBase<ModuleConfig> {
                 const maxCameras = this.config.cameraCount ?? 10
 
                 for (let cameraId = 1; cameraId <= maxCameras; cameraId++) {
+                        if (!this.api.canPoll()) break
+
                         try {
                                 const response = await this.api.framingState(cameraId)
                                 if (response.Response === 'ack' && response.FramingState?.[0]) {
