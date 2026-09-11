@@ -619,7 +619,7 @@ export function getPresets(): CompanionPresetDefinitions {
                         },
                         feedbacks: [
                                 {
-                                        feedbackId: 'atEnabled',
+                                        feedbackId: 'atConnectionState',
                                         options: { camera_id: cam },
                                         style: {
                                                 bgcolor: combineRgb(0, 153, 0),

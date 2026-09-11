@@ -74,7 +74,7 @@ This module provides control of Panasonic Media Production Suite plugins includi
 ### Auto Framing Feedbacks
 - **Framing Enabled** - Camera has Auto Framing enabled
 - **Framing Running** - Tracking is currently active
-- **Framing Status** - Check for specific status (Stopped/Tracking/Lost/Searching)
+- **Framing Status** - Check for specific status (Stopped/Tracking/Lost/Searching/Disabled)
 - **Auto Zoom Enabled** - Auto Zoom is on
 - **Auto Face Search Enabled** - Auto Face Search is on
 - **PTZ Moving** - Camera PTZ is moving

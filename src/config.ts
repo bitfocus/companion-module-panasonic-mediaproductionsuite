@@ -6,6 +6,8 @@ export interface ModuleConfig {
         mpsPort: number
         pollInterval: number
         cameraCount: number
+        pollAutoTracking: boolean
+        pollVideoMixer: boolean
 }
 
 export function getConfigFields(): SomeCompanionConfigField[] {
@@ -58,6 +60,22 @@ export function getConfigFields(): SomeCompanionConfigField[] {
                         min: 1,
                         max: 100,
                         tooltip: 'Maximum number of cameras to poll',
+                },
+                {
+                        type: 'checkbox',
+                        id: 'pollAutoTracking',
+                        label: 'Poll Auto Tracking Plugin',
+                        width: 6,
+                        default: false,
+                        tooltip: 'Poll Auto Tracking status on port 1337. Leave disabled if this plugin is not in use.',
+                },
+                {
+                        type: 'checkbox',
+                        id: 'pollVideoMixer',
+                        label: 'Poll Video Mixer Plugin',
+                        width: 6,
+                        default: false,
+                        tooltip: 'Poll Video Mixer status on port 1337. Leave disabled if this plugin is not in use.',
                 },
         ]
 }

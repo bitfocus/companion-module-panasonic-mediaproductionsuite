@@ -15,7 +15,7 @@ async function httpGet(urlString: string, acceptType = 'text/plain'): Promise<{ 
 			path: url.pathname + url.search,
 			method: 'GET',
 			headers: { Accept: acceptType },
-			timeout: 10000,
+			timeout: 3000,
 		}
 
 		const request = httpModule.request(options, (response) => {
