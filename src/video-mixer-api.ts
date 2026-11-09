@@ -20,6 +20,7 @@ async function httpGet(urlString: string, acceptType = 'text/plain'): Promise<{ 
 
 		const request = httpModule.request(options, (response) => {
 			if (response.statusCode && response.statusCode >= 300 && response.statusCode < 400 && response.headers.location) {
+				response.resume()
 				httpGet(response.headers.location, acceptType).then(resolve).catch(reject)
 				return
 			}
