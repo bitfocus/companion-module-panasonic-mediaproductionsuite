@@ -15,9 +15,9 @@
   ],
   "legacyIds": [],
   "runtime": {
-    "type": "node18",
+    "type": "node26",
     "api": "nodejs-ipc",
-    "apiVersion": "1.11.0",
+    "apiVersion": "1.15.1",
     "entrypoint": "../dist/main.js"
   },
   "manufacturer": "Panasonic",
